@@ -8,6 +8,21 @@
 Filename = {{name}}<br>
 Attributes = {{n_col}}<br>
 Entities = {{n_row}}<br>
+<script>
+    function getVal(){
+        var value = $.ajax({
+            type:"GET",
+            dataType: "json",
+            data:{'filename':'{{lists}}','feature':$('#header1').val(),'func':$("#functions").val()},
+            url: "/stat",
+            success: function(data){
+                buf1=data;
+                console.log(data);
+                $("#output").val(data)
+            }
+        })
+    }
+</script>
 
 <script type="text/javascript"charset="utf-8">
     d3.text('{{lists}}', function(data) {
@@ -42,9 +57,12 @@ Entities = {{n_row}}<br>
         <option value="mean">Mean (average)</option>
         <option value="sum">Sum</option>
     </select>
-    <input type="submit">
+    <input type="button" value="Submit" onclick="getVal()">
+    <input id=output disabled></input>
+
 </form>
-<div>
+<div id="table_container" style="overflow-y: auto;max-height: 600px;"></div>
+<div id="table_container">
     <table>
         <tr>
             {% for c in col %} 
