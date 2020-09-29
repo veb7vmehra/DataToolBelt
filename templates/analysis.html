@@ -42,7 +42,7 @@
         $.ajax({
             type:"GET",
             dataType: "json",
-            data:{'feature1':$("#feature1").val(),'feature2':id},
+            data:{'feature2':$("#feature1").val(),'feature1':id},
             url: "/analyse",
             success: function(data){
                 buf1=data;
@@ -71,7 +71,7 @@ Formula: <input id="formula"><br>
 <br> Select Feature2:
 <div id="img_butt">
 {% for c in col %} 
-<input type="button" value='{{c}}' onclick("showImg({{c}})")>    
+<input type="button" value='{{c}}' onclick="showImg('{{c}}')">    
 {% endfor %}
 </div>
 
