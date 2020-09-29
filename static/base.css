@@ -246,7 +246,7 @@ table {
 tbody {
     display: block !important;
     overflow-y: scroll !important;
-    max-height: 600px !important;
+    max-height: 300px !important;
 }
 
 th {

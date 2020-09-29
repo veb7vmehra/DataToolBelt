@@ -2,4 +2,80 @@
 
 {% block input %}
 
+<script>
+    function del(id){
+        $("#key"+id).remove()
+        $("#value"+id).remove()
+    }
+    function addVariable(){
+        var count = $('#dict').children().length;
+        var selString = '<input class="value" name="value'+count+'" id="value'+count+'" onchange="if(this.value==\'\'){del('+count+')}"/>'
+        selString += '<select name="value'+count+'" id="value'+count+'">'
+        {% for c in col %} 
+        selString += '<option value="{{c}}">{{c}}</option>'       
+        {% endfor %}
+        selString += '</select>'
+        var newDiv = $('<input class="key" name="key'+count+'" id="key'+count+'""/>'+selString);
+        $('#dict').append(newDiv);
+    }
+
+    function makeString(){
+        var array = []
+        $("#dict").each(function(){
+            array.push($(this).val()) 
+        })
+        array.push("formula")
+        array($("#formula")) 
+        var value = array(",")
+        $.ajax({
+            type:"GET",
+            dataType: "json",
+            data:{'formula':value},
+            url: "/anAdd",
+            success: function(data){
+                buf1=data;
+                console.log(data);
+                $('#field_image').attr("src",data);
+            }
+        })
+    }
+    function showImg(id){
+        if(id == $("#feature1").val()){
+            return;
+        }
+        $.ajax({
+            type:"GET",
+            dataType: "json",
+            data:{'feature1':$("#feature1").val(),'feature2':id},
+            url: "/analyse",
+            success: function(data){
+                buf1=data;
+                console.log(data);
+                $('#field_image').attr("src",data);
+            }
+        })
+    }
+</script>
+
+
+<div id="dict">
+</div>
+<input type="button" onclick="addVariable()" value="Add variable">
+<input id="name" name="name" required>
+Formula: <input id="formula">
+<input type="button" onclick="makeString()">
+<img id="field_image" src="">
+<select id="feature1" name="feature1">
+
+{% for c in col %} 
+<option value='{{c}}'>{{c}}</option>       
+{% endfor %}
+
+</select>
+<div id="img_butt">
+{% for c in col %} 
+<input type="button" value='{{c}}' onclick("showImg({{c}})")>{{c}}</option>       
+{% endfor %}
+</div>
+
 {% endblock %}
