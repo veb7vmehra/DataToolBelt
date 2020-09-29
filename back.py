@@ -9,6 +9,7 @@ from datetime import *
 import magic
 from subprocess import Popen, PIPE
 from math import floor
+import converter.py as con
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv (filename)
@@ -42,13 +43,13 @@ def disp(filename):
 
 def stat(filename, feature, func):
     df = pd.read_csv(filename)
-    if func = mean:
+    if func == "mean":
         ans = df[feature].mean()
-    if func = mx:
+    if func == "mx":
         ans = df[feature].max()
-    if func = mn:
+    if func == "mn":
         ans = df[feature].min()
-    if func = sm:
+    if func == "sm":
         ans = df[feature].sum()
     return ans
 
@@ -61,9 +62,16 @@ def basic():
     if request.method == 'POST':
         if request.files['file'].filename != '':
             f = request.files.get('file')
-            varrr = "static/"+vid.filename
-            err=vid.save(varrr) 
-            n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp(vid.filename)
+            varrr = "static/"+f.filename
+            err=f.save(varrr)
+            name = filename('.')
+            ext = name[-1]
+            name = name[0]
+            if ext == "json":
+                con.jsontocsv("static/"+filename, "static/"+name+".csv")
+            elif ext == "xml":
+                con.xmltocsv("static/"+filename, "static/"+name+".csv")
+            n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
             lists = []
             line0 = line0.split(',')
             lists.append(line0)
@@ -77,17 +85,48 @@ def basic():
             lists.append(line4)
             line5 = line5.split(',')
             lists.append(line5)
-            return render_template("index.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
-    return render_template(index.html)
+            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
+    return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
-def stats();
+def stats():
     if request.method == 'POST':
         filename = request.form['filename']
+        name = filename('.')
+        ext = name[-1]
+        name = name[0]
+        if ext == "json":
+            con.jsontocsv("static/"+filename, "static/"+name+".csv")
+        elif ext == "xml":
+            con.xmltocsv("static/"+filename, "static/"+name+".csv")
         feature = request.form['feature']
         func = request.form['func']
         ans = stat(filename, feature, func)
-        return render_template("index.html", filename = filename, feature = feature, func = func, ans = ans)
+        return render_template("filedata.html", filename = filename, feature = feature, func = func, ans = ans)
+
+@app.route('/con', methods = ['GET', 'POST'])
+def conv():
+    if request.method == 'POST':
+        filename = request.form['filename']
+        name = filename.split('.')
+        ext = name[-1]
+        name = name[0]
+        to = filename['to']
+        if ext == "csv":
+            if to == "json":
+                con.csvtojson("static/"+filename, "static/"+name+"."+to)
+            elif to == "xml":
+                con.csvtoxml("static/"+filename, "static/"+name+"."+to)
+        elif ext == "json":
+            if to == "csv":
+                con.jsontocsv("static/"+filename, "static/"+name+"."+to)
+            elif to == "xml":
+                con.jsontoxml("static/"+filename, "static/"+name+"."+to)
+        elif ext == "xml":
+            if to == "json":
+                con.xmltojson("static/"+filename, "static/"+name+"."+to)
+            elif to == "csv":
+                con.xmltocsv("static/"+filename, "static/"+name+"."+to)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', debug=True)
