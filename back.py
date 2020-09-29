@@ -88,3 +88,6 @@ def stats();
         func = request.form['func']
         ans = stat(filename, feature, func)
         return render_template("index.html", filename = filename, feature = feature, func = func, ans = ans)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=80, debug=True)
