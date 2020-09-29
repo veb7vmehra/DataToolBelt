@@ -6,16 +6,17 @@
 
 <script>
     function getVal(){
-        $("#output").val($.ajax({
+        var value = $.ajax({
             type:"GET",
             dataType: "json",
-            data:{'feature':$('#header1').val(),'func':$("#functions").val()},
+            data:{'filename':'{{lists}}','feature':$('#header1').val(),'func':$("#functions").val()},
             url: "/stat",
             success: function(data){
                 buf1=data;
                 console.log(data);
+                $("#output").val(data)
             }
-        }))
+        })
     }
 </script>
 

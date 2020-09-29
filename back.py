@@ -194,7 +194,7 @@ def new_feature(filename, com, name = " "):
             temp = formula
     vals = []
     i = 0
-    if name != " "
+    if name != " ":
         i = 1
     n = len(df)
     for j in range(i, n):
@@ -233,13 +233,16 @@ def disp(filename):
 
 def stat(filename, feature, func):
     df = pd.read_csv(filename)
+    ans = 0
+    print(filename,feature,func)
+    print(df)
     if func == "mean":
         ans = df[feature].mean()
-    if func == "mx":
+    if func == "max":
         ans = df[feature].max()
-    if func == "mn":
+    if func == "min":
         ans = df[feature].min()
-    if func == "sm":
+    if func == "sum":
         ans = df[feature].sum()
     return ans
 
@@ -263,27 +266,27 @@ def basic():
             elif ext == "xml":
                 con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
-            res = make_response(render_template("filedata.html", filename = filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv"))
-            res.set_cookie("filename", value=filename)
+            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv"))
+            res.set_cookie("filename", value=f.filename)
             return res
     return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
 def stats():
-    if request.method == 'POST':
-        filename = request.form['filename']
-        name = filename('.')
+    if request.method == 'GET':
+        filename = request.args.get('filename').split('/')[-1]
+        name = filename.split('.')
         ext = name[-1]
         name = name[0]
         if ext == "json":
-            con.jsontocsv("static/"+filename, "static/"+name+".csv")
+            con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
         elif ext == "xml":
-            con.xmltocsv("static/"+filename, "static/"+name+".csv")
-        feature = request.form['feature']
-        func = request.form['func']
-        ans = stat(filename, feature, func)
-        n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name+".csv")
-        return render_template("filedata.html", filename = filename, feature = feature, func = func, ans = ans, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
+            con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
+        feature = request.args.get('feature')
+        func = request.args.get('func')
+        ans = stat("static/"+name+".csv", feature, func)
+        print(ans,type(ans))
+        return str(ans)
     return render_template("upload.html")
 
 @app.route('/con', methods = ['GET', 'POST'])
