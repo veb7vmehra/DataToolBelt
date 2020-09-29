@@ -11,6 +11,8 @@
         var container = d3.select("body")
             .append("table")
 
+            .append("tbody")
+
             .selectAll("tr")
                 .data(parsedCSV).enter()
                 .append("tr")
