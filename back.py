@@ -1,6 +1,5 @@
 # hackathon T - Hacks 3.0
 # flask backend of data-cleaning website
-print("Hello")
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -176,26 +175,23 @@ def test(s):
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv(filename)
-    sums = df.groupby(df[feature1])[feature2].sum()
+    sums = df.groupby(df[feature1]).df[feature2].sum()
     plt.axis('equal')
     explode = (0.1, 0, 0, 0, 0)  
     plt.pie(sums, labels=sums.index, explode = explode, autopct='%1.1f%%', shadow=True, startangle=140)
-<<<<<<< HEAD
     plt.title("Pie chart on basis of "+feature2)
     name = filename.split('.')
     plt.savefig(name[0]+".png")
+    plt.close()
 
 def feature_scatter(filename, feature1, feature2):
     df = pd.read_csv(filename)
-    sums = df.groupby(df[feature1])[feature2].sum()
     plt.axis('equal')
-    plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
+    plt.pie(feature1, feature2, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Scatter plot between "+feature1+" and "+feature2)
-=======
-    plt.title("Pie chart on basis of "+feature1)
->>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
     name = filename.split('.')
     plt.savefig(name[0]+".png")
+    plt.close()
 
 def new_feature(filename, com, name = " "):
     df = pd.read_csv(filename)
@@ -229,8 +225,8 @@ def new_feature(filename, com, name = " "):
 
 def disp(filename):
     df = pd.read_csv(filename)
-    n_row = str(len(df) + 1)
-    n_col = str(len(df.axes[1]) + 1)
+    n_row = str(len(df))
+    n_col = str(len(df.axes[1]))
     col = []
     for c in df.columns:
         col.append(c)
@@ -259,6 +255,39 @@ def stat(filename, feature, func):
     if func == "sum":
         ans = df[feature].sum()
     return ans
+
+def freq(filename, feature, condition):
+    df = pd.read_csv(filename)
+    condition = condition.split(' ')
+    if condition[0] == "=":
+        counts = df[feature].value_counts().to_dict()
+        return counts[int(condition[1])]
+    elif condition[0] == ">":
+        count = 0
+        df = pd.read_csv(filename)
+        n = df.columns.get_loc(feature)
+        for i in range(len(df)):
+            if df.at[i, n] > int(condition[1]):
+                count = count + 1
+        return count
+    elif condition[0] == "<":
+        count = 0
+        df = pd.read_csv(filename)
+        n = df.columns.get_loc(feature)
+        for i in range(len(df)):
+            if df.at[i, n] < int(condition[1]):
+                count = count + 1
+        return count
+
+def drop(filename, feature, condition):
+    df = pd.read_csv(filename)
+    condition = condition.split(' ')
+    if condition[0] == "=":
+        df.drop(df[df[feature] == int(condition[1])].index, inplace = True)
+    elif condition[0] == ">":
+        df.drop(df[df[feature] > int(condition[1])].index, inplace = True)
+    elif condition[0] == "<":
+        df.drop(df[df[feature] < int(condition[1])].index, inplace = True)
 
 app = Flask(__name__)
 
@@ -300,11 +329,8 @@ def stats():
         name = name[0]
         if ext == "json":
             con.jsontocsv("static/"+filename, "static/"+name+".csv")
-<<<<<<< HEAD
         elif ext == "nc":
             con.netCDFtocsv("static/"+filename, "static/"+name+".csv")
-=======
->>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
         elif ext == "xml":
             con.xmltocsv("static/"+filename, "static/"+name+".csv")
         feature = request.args.get('feature')
@@ -380,13 +406,14 @@ def anAdd():
     for c in df.columns:
         col.append(c)
     if request.method == 'GET':
-        name = request.form['name']
+        kname = request.form['name']
         com = request.form['formula']
-        new_feature(filename, com, name)
+        new_feature(filename, com, kname)
+        feature_pie("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
 @app.route('/clean', methods = ['GET', 'POST'])
-def analyse():
+def clean():
     filename = request.cookies.get('filename')
     name = filename.split('.')
     name = name[0]
@@ -411,10 +438,43 @@ def clAdd():
     for c in df.columns:
         col.append(c)
     if request.method == 'GET':
-        name = request.form['name']
+        kname = request.form['name']
         com = request.form['formula']
-        new_feature(filename, com, name)
+        new_feature(filename, com, kname)
+        feature_scatter("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
+
+@app.route('/freq', methods = ['GET', 'POST'])
+def fre():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'POST':
+        feature = request.form['feature']
+        cond = request.form['cond']
+        freq = freq(filename, feature, cond)
+        return render_template("clean.html", col = col, feature = feature, cond = cond, freq = freq)
+    return render_template("clean.html", col = col)
+
+@app.route('/drop', methods = ['GET', 'POST'])
+def dro():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'POST':
+        feature = request.form['feature']
+        cond = request.form['cond']
+        dro(filename, feature, cond)
+        return render_template("clean.html", col = col, cond = cond, freq = freq)
+    return render_template("clean.html", col = col)
 
 if __name__ == '__main__':
     app.run(debug=True)
