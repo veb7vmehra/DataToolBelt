@@ -23,5 +23,36 @@
                 .text(function(d) { return d; });
     });
 </script>
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="header1">Choose a feature:</label>
+    <select id="header1" name="header1">
 
+        {% for c in col %} 
+        <option value='{{c}}'>{{c}}</option>       
+        {% endfor %}
+
+    </select>
+    <label for="features">Choose a function:</label>
+    <select id="functions" name="functions">
+        <option value="max">Maximum</option>
+        <option value="min">Minimum</option>
+        <option value="mean">Mean (average)</option>
+        <option value="sum">Sum</option>
+    </select>
+    <input type="submit">
+</form>
+<div>
+    <table>
+        <tr>
+            {% for c in col %} 
+            <td>{{c}}</td>       
+            {% endfor %}
+            </tr>
+            <tr>
+                {% for type in types %} 
+                <td>{{type}}</td>       
+                {% endfor %}
+                </tr>
+    </table>
+</div>
 {% endblock %}
