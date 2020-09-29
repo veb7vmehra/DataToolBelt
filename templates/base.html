@@ -20,23 +20,6 @@
           </nav>
         </div>
         {% block input %}
-        {% endblock %}
-        <script
-        src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='base.css') }}"></script>   
-        <script>
-            
-            $("html").fileUplodPlugins({
-               inputFileUpload: "#fileId",
-                ValidType: ['image/jpeg', 'image/png',],
-                btnUpload: ".file-upload-wrapper-title__btn",
-                deleteImageBtn: ".image-previwe__delete-btn",
-                boxFileUploadPreviwe: '.image-previwe',
-                boxErrorPreviwe: '.error-wrapper',
-            })
-        </script>
-        
+        {% endblock %}   
 </body>
 </html>
