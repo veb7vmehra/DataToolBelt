@@ -4,6 +4,11 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
+
+Filename = {{name}}<br>
+Attributes = {{n_col}}<br>
+Entities = {{n_row}}<br>
+
 <script type="text/javascript"charset="utf-8">
     d3.text('{{lists}}', function(data) {
         var parsedCSV = d3.csv.parseRows(data);

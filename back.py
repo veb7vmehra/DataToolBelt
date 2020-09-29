@@ -88,7 +88,7 @@ def basic():
             line5 = line5.split(',')
             lists.append(line5)
             print(lists)
-            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
+            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", name = f.filename)
     return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
