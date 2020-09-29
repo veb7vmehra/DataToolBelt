@@ -4,6 +4,21 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
+<script>
+    function getVal(){
+        $("#output").val($.ajax({
+            type:"GET",
+            dataType: "json",
+            data:{'feature':$('#header1').val(),'func':$("#functions").val()},
+            url: "/stat",
+            success: function(data){
+                buf1=data;
+                console.log(data);
+            }
+        }))
+    }
+</script>
+
 <script type="text/javascript"charset="utf-8">
     d3.text('{{lists}}', function(data) {
         var parsedCSV = d3.csv.parseRows(data);
@@ -37,9 +52,12 @@
         <option value="mean">Mean (average)</option>
         <option value="sum">Sum</option>
     </select>
-    <input type="submit">
+    <input type="button" value="Submit" onclick="getVal()">
+    <input id=output disabled></input>
+
 </form>
-<div>
+<div id="table_container" style="overflow-y: auto;max-height: 600px;"></div>
+<div id="table_container">
     <table>
         <tr>
             {% for c in col %} 
