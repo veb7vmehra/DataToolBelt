@@ -1,108 +1,24 @@
 {% extends "base.html" %}
 
 {% block input %}
-<script>
-        class TableCsv {
-    /**
-     * @param {HTMLTableElement} root The table element which will display the CSV data.
-     */
-    constructor(root) {
-      this.root = root;
-    }
-  
-    /**
-     * Clears existing data in the table and replaces it with new data.
-     *
-     * @param {string[][]} data A 2D array of data to be used as the table body
-     * @param {string[]} headerColumns List of headings to be used
-     */
-    update(data, headerColumns = []) {
-      this.clear();
-      this.setHeader(headerColumns);
-      this.setBody(data);
-    }
-  
-    /**
-     * Clears all contents of the table (incl. the header).
-     */
-    clear() {
-      this.root.innerHTML = "";
-    }
-  
-    /**
-     * Sets the table header.
-     *
-     * @param {string[]} headerColumns List of headings to be used
-     */
-    setHeader(headerColumns) {
-      this.root.insertAdjacentHTML(
-        "afterbegin",
-        `
-              <thead>
-                  <tr>
-                      ${headerColumns.map((text) => `<th>${text}</th>`).join("")}
-                  </tr>
-              </thead>
-          `
-      );
-    }
-  
-    /**
-     * Sets the table body.
-     *
-     * @param {string[][]} data A 2D array of data to be used as the table body
-     */
-    setBody(data) {
-      const rowsHtml = data.map((row) => {
-        return `
-                  <tr>
-                      ${row.map((text) => `<td>${text}</td>`).join("")}
-                  </tr>
-              `;
-      });
-  
-      this.root.insertAdjacentHTML(
-        "beforeend",
-        `
-              <tbody>
-                  ${rowsHtml.join("")}
-              </tbody>
-          `
-      );
-    }
-  }
-  
-  const tableRoot = document.querySelector("#csvRoot");
-  const csvFileInput = document.querySelector("#csvFileInput");
-  const tableCsv = new TableCsv(tableRoot);
-  
-  csvFileInput.addEventListener("change", (e) => {
-    Papa.parse({{lists}}, {
-      delimiter: ",",
-      skipEmptyLines: true,
-      complete: (results) => {
-        tableCsv.update(results.data.slice(1), results.data[0]);
-      }
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script type="text/javascript"charset="utf-8">
+    d3.text('{{lists}}', function(data) {
+        var parsedCSV = d3.csv.parseRows(data);
+
+        var container = d3.select("body")
+            .append("table")
+
+            .selectAll("tr")
+                .data(parsedCSV).enter()
+                .append("tr")
+
+            .selectAll("td")
+                .data(function(d) { return d; }).enter()
+                .append("td")
+                .text(function(d) { return d; });
     });
-  });
-
 </script>
-
-    <div class="filedetails">
-        <div class="filename">
-            Filename comes here
-        </div>
-        <div class="rows">
-            Number of rows
-        </div>
-        <div class="columns">
-            Number of columns
-        </div>
-        <div class="filepreview">
-            <object data="" width="600" height="400"></object>
-        </div>
-        <table id="csvRoot"></table>
-      
-        <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
-    </div>
 {% endblock %}

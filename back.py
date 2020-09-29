@@ -66,13 +66,13 @@ def basic():
             f = request.files.get('file')
             varrr = "static/"+f.filename
             err=f.save(varrr)
-            name = filename('.')
+            name = f.filename.split('.')
             ext = name[-1]
             name = name[0]
             if ext == "json":
-                con.jsontocsv("static/"+filename, "static/"+name+".csv")
+                con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
-                con.xmltocsv("static/"+filename, "static/"+name+".csv")
+                con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
             lists = []
             line0 = line0.split(',')
@@ -87,7 +87,8 @@ def basic():
             lists.append(line4)
             line5 = line5.split(',')
             lists.append(line5)
-            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
+            print(lists)
+            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
     return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
