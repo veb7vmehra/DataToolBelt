@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block input %}
+<script>
+    function showImg(){
+        if(id == $("#feature1").val()){
+            return;
+        }
+        var value = $.ajax({
+            type:"GET",
+            dataType: "text",
+            data:{'feature1':$("#feature1").val(),'feature2':$("#feature2").val()},
+            url: "/analyse",
+            success: function(data){
+                buf2=data;
+                var d = new Date()
+                $('#field_image2').attr("src",data+'?'+(d));
+            }
+        })
+    }
+</script>
+<form action="" method="GET" >
+    <label for="field1">Choose a feature:</label>
+    <select id="field1" name="field1" style="margin: 1%;">
+
+        {% for c in col %} 
+        <option value='{{c}}'>{{c}}</option>       
+        {% endfor %}
+
+    </select>
+    <label for="field2">Choose a feature:</label>
+    <select id="field2" name="field2" style="margin: 1%;">
+
+        {% for c in col %} 
+        <option value='{{c}}'>{{c}}</option>       
+        {% endfor %}
+
+    </select>
+    <input type="button" value="Submit" onclick="showImg()" style="margin: 1%;">
+    <img id="field_image2" src="">
+</form>
