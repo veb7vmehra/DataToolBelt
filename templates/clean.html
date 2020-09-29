@@ -91,7 +91,7 @@
 <div class="mainclean" style="display: -webkit-inline-box;position: relative; right: 6%; align-self: center;">
     <div class="feature_clean" style="padding: 4%;">
         <label for="f_clean">Choose a feature:</label>
-        <select id="f_clean" name="f_clean" onchange($( "#rangeName" ).val($(this).val()))>
+        <select id="f_clean" name="f_clean" onchange="$('#rangeName').val($(this).val())">
 
             {% for c in col %} 
             <option value='{{c}}'>{{c}}</option>       
