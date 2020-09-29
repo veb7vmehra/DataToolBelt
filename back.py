@@ -180,6 +180,7 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
     plt.axis('equal')
     explode = (0.1, 0, 0, 0, 0)  
     plt.pie(sums, labels=sums.index, explode = explode, autopct='%1.1f%%', shadow=True, startangle=140)
+<<<<<<< HEAD
     plt.title("Pie chart on basis of "+feature2)
     name = filename.split('.')
     plt.savefig(name[0]+".png")
@@ -190,6 +191,9 @@ def feature_scatter(filename, feature1, feature2):
     plt.axis('equal')
     plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Scatter plot between "+feature1+" and "+feature2)
+=======
+    plt.title("Pie chart on basis of "+feature1)
+>>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
     name = filename.split('.')
     plt.savefig(name[0]+".png")
 
@@ -212,7 +216,7 @@ def new_feature(filename, com, name = " "):
             if k%2 == 0:
                 if c == "formula":
                     break
-                formual.replace(c, df.at[j, com[k+1]])
+                formula.replace(c, df.at[j, com[k+1]])
         vals.append(test(formula))
         formula = temp
     col = len(df.axes[1]) + 2
@@ -271,6 +275,10 @@ def basic():
             name = f.filename.split('.')
             ext = name[-1]
             name = name[0]
+            if ext == "csv":
+                con.csvtojson("static/"+f.filename, "static/"+name+".json")
+                os.remove("static/"+f.filename)
+                con.jsontocsv("static/"+name+".json", "static/"+f.filename)
             if ext == "json":
                 con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
@@ -292,8 +300,11 @@ def stats():
         name = name[0]
         if ext == "json":
             con.jsontocsv("static/"+filename, "static/"+name+".csv")
+<<<<<<< HEAD
         elif ext == "nc":
             con.netCDFtocsv("static/"+filename, "static/"+name+".csv")
+=======
+>>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
         elif ext == "xml":
             con.xmltocsv("static/"+filename, "static/"+name+".csv")
         feature = request.args.get('feature')
