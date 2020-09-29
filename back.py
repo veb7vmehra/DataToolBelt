@@ -64,7 +64,7 @@ app = Flask(__name__)
 
 #app.secret_key = 'maidoublequotesmelikhrhahu'
 
-run_with_ngrok(app)
+#run_with_ngrok(app)
 @app.route('/', methods=['GET', 'POST'])
 def basic():
     if request.method == 'POST':
@@ -93,7 +93,8 @@ def basic():
             lists.append(line4)
             line5 = line5.split(',')
             lists.append(line5)
-            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
+            print(lists)
+            return render_template("filedata.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
     return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
