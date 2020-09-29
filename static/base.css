@@ -3,17 +3,18 @@
     font-family: system-ui;
     font-weight: 500;
     color: whitesmoke;
+    font-size: large;
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 
 .header{
   width:100%;
   height:80px;
-  border-top:8px solid white;
+  border-top:8px solid rgb(0, 0, 0);
   border-left:0px solid white;
-  border-bottom:8px solid white;
+  border-bottom:8px solid rgb(0, 0, 0);
   border-right:0px solid white;
-  border-radius: 10px;
+  border-radius: 8px;
   animation: cambia-color 10s linear infinite;
     background: -webkit-linear-gradient(left, #ff3503, #2e5bd6);
 
@@ -25,6 +26,7 @@ h2{
   font-family: 'Montserrat', sans-serif;
   padding:0px 14px;
   float: left;
+  font-size: larger;
   margin-top: 1em;
 }
 .header li{
@@ -64,8 +66,13 @@ h2{
 
 input {
     color: #b00707;
+    background-color: #d3e7ff;
 }
 
+option {
+    color: #b00707;
+    background-color: #d3e7ff;
+}
 
 ul{
     list-style: none;
@@ -244,6 +251,11 @@ label.file-upload-btn {
     margin: 10px;
 }
 
+button {
+    color: #b00707;
+    background-color: #d3e7ff;
+}
+
 table {
     border-collapse: collapse;
     border-radius: 5px;
@@ -290,6 +302,7 @@ td {
 }
 select {
     color: #b00707;
+    background-color: #d3e7ff;
 }
 
 .scrollover::-webkit-scrollbar {

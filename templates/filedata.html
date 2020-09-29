@@ -4,8 +4,8 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <br>
-Filename = {{filename}}<br>
-Attributes = {{n_col}}<br>
+Filename = {{filename}}<br><br>
+Attributes = {{n_col}}<br><br>
 Entities = {{n_row}}<br>
 
 <script>
@@ -58,18 +58,18 @@ Entities = {{n_row}}<br>
 </div>
 <form action="" method="POST" enctype="multipart/form-data">
     <label for="head">Convert to:</label>
-    <select id="head" name = "head">
+    <select id="head" name = "head" style="margin: 1%;">
         <option id="option1">{{convertable.0}}</option>
         <option id="option2">{{convertable.1}}</option>
         <option id="option3">{{convertable.2}}</option>
     </select>
-    <input type="button" value="Convert and Download">
+    <input type="button" value="Convert and Download" style="margin: 1%;">
 
 </form>
 
 <form action="" method="POST" enctype="multipart/form-data">
     <label for="header1">Choose a feature:</label>
-    <select id="header1" name="header1">
+    <select id="header1" name="header1" style="margin: 1%;">
 
         {% for c in col %} 
         <option value='{{c}}'>{{c}}</option>       
@@ -77,13 +77,13 @@ Entities = {{n_row}}<br>
 
     </select>
     <label for="features">Choose a function:</label>
-    <select id="functions" name="functions">
+    <select id="functions" name="functions" style="margin: 1%;">
         <option value="max">Maximum</option>
         <option value="min">Minimum</option>
         <option value="mean">Mean (average)</option>
         <option value="sum">Sum</option>
     </select>
-    <input type="button" value="Submit" onclick="getVal()">
+    <input type="button" value="Submit" onclick="getVal()" style="margin: 1%;">
     <input id=output disabled></input>
 
 </form>
