@@ -211,10 +211,10 @@ def new_feature(filename, com, name = " "):
             if k%2 == 0:
                 if c == "formula":
                     break
-                formula.replace(c, df.at[j, com[k+1]])
+                formula = formula.replace(c, df.at[j, com[k+1]])
         vals.append(test(formula))
         formula = temp
-    col = len(df.axes[1]) + 2
+    col = len(df.axes[1])
     if name != " ":
         df.insert(col, name, vals, True)
     else:
@@ -409,7 +409,7 @@ def anAdd():
     if request.method == 'GET':
         kname = request.form['name']
         com = request.form['formula']
-        new_feature(filename, com, kname)
+        new_feature("static/"+filename, com, kname)
         feature_pie("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
@@ -441,7 +441,7 @@ def clAdd():
     if request.method == 'GET':
         kname = request.form['name']
         com = request.form['formula']
-        new_feature(filename, com, kname)
+        new_feature("static/"+filename, com, kname)
         feature_scatter("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
