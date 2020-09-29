@@ -25,8 +25,8 @@
         var value = array(",")
         $.ajax({
             type:"GET",
-            dataType: "json",
-            data:{'formula':value,'field2':$("#formula2").val()},
+            dataType: "text",
+            data:{'name':value,'feature1':$("#feature1").val()},
             url: "/anAdd",
             success: function(data){
                 buf1=data;
@@ -53,24 +53,21 @@
     }
 </script>
 
-<div id="dict">
-</div>
-<input type="button" onclick="addVariable()" value="Add variable"><br>
-Field Name: <input id="name" name="name" required>
-Formula: <input id="formula"><br>
-<br> Select Feature2:
-<select id="formula2" name="formula2">
-{% for c in col %} 
-<option value='{{c}}'>{{c}}</option>       
-{% endfor %}
-</select>
-<input type="button" onclick="makeString()" value="Add New Field">
 <br> Select Feature1:
 <select id="feature1" name="feature1">
 {% for c in col %} 
 <option value='{{c}}'>{{c}}</option>       
 {% endfor %}
 </select>
+
+
+<div id="dict">
+</div>
+<input type="button" onclick="addVariable()" value="Add variable"><br>
+Field Name: <input id="name" name="name" required>
+Formula: <input id="formula"><br>
+
+<input type="button" onclick="makeString()" value="Add New Field">
 
 <br> Select Feature2:
 <div id="img_butt">
