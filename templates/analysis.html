@@ -57,7 +57,7 @@
 </script>
 
 <br> Select Feature1:
-<select id="feature1" name="feature1">
+<select id="feature1" name="feature1" style="margin: 2%;">
 {% for c in col %} 
 <option value='{{c}}'>{{c}}</option>       
 {% endfor %}
@@ -66,16 +66,16 @@
 
 <div id="dict">
 </div>
-<input type="button" onclick="addVariable()" value="Add variable"><br>
-Field Name: <input id="fname" name="fname" required>
-Formula: <input id="formula"><br>
+<input type="button" onclick="addVariable()" value="Add variable" style="margin-bottom: 1%;"><br>
+Field Name: <input id="fname" name="fname" required style="margin: 1% 1% 1% 0%;">
+Formula: <input id="formula" syle="margin: 1% 1% 1% 0%;"><br>
 
-<input type="button" onclick="makeString()" value="Add New Field">
+<input type="button" onclick="makeString()" value="Add New Field" style="margin: 1.2%;">
 
 <br> Select Feature2:
 <div id="img_butt">
 {% for c in col %} 
-<input type="button" value='{{c}}' onclick="showImg('{{c}}')">    
+<input type="button" value='{{c}}' onclick="showImg('{{c}}')" style="margin: 0.3%;">    
 {% endfor %}
 </div>
 
