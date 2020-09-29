@@ -25,7 +25,7 @@
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
-        <script src="../static/base.js"></script>   
+        <script src="{{ url_for('static', filename='base.js') }}"></script>   
         <script>
             
             $("html").fileUplodPlugins({
@@ -37,7 +37,6 @@
                 boxErrorPreviwe: '.error-wrapper',
             })
         </script>
-        <div id="dvCSV">
-        </div>
+        
 </body>
 </html>
