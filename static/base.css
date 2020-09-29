@@ -2,7 +2,7 @@
     box-sizing: border-box;
     font-family: system-ui;
     font-weight: 500;
-    color: #a9e4f1;
+    color: whitesmoke;
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 
@@ -255,7 +255,6 @@ table {
 
 tbody {
     display: block !important;
-    overflow-y: scroll !important;
     max-height: 300px !important;
 }
 
@@ -266,10 +265,12 @@ th {
 }
 tr {
     width: 100%;
+    background: #ffffff;
 }
 th,td {
     padding: 10px 20px;
     color: #b00707;
+    background: #ffffff;
 }
 
 tr:nth-child(even) {
@@ -290,3 +291,11 @@ td {
 select {
     color: #b00707;
 }
+
+.scrollover::-webkit-scrollbar {
+    display: none;
+}
+.scrollover {
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+  }
