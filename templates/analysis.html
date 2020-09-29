@@ -26,7 +26,7 @@
         $.ajax({
             type:"GET",
             dataType: "json",
-            data:{'formula':value},
+            data:{'formula':value,'field2':$("#formula2").val()},
             url: "/anAdd",
             success: function(data){
                 buf1=data;
@@ -39,35 +39,39 @@
         if(id == $("#feature1").val()){
             return;
         }
-        $.ajax({
+        var value = $.ajax({
             type:"GET",
-            dataType: "json",
+            dataType: "text",
             data:{'feature2':$("#feature1").val(),'feature1':id},
             url: "/analyse",
             success: function(data){
-                buf1=data;
-                console.log(data);
-                $('#field_image').attr("src",data);
+                buf2=data;
+                var d = new Date()
+                $('#field_image').attr("src",data+'?'+(d));
             }
         })
     }
 </script>
 
-
 <div id="dict">
 </div>
-<input type="button" onclick="addVariable()" value="Add variable">
-<input id="name" name="name" required>
+<input type="button" onclick="addVariable()" value="Add variable"><br>
+Field Name: <input id="name" name="name" required>
 Formula: <input id="formula"><br>
-<input type="button" onclick="makeString()" value="Add New Field">
-<br> Select Feature1:
-<select id="feature1" name="feature1">
-
+<br> Select Feature2:
+<select id="formula2" name="formula2">
 {% for c in col %} 
 <option value='{{c}}'>{{c}}</option>       
 {% endfor %}
-
 </select>
+<input type="button" onclick="makeString()" value="Add New Field">
+<br> Select Feature1:
+<select id="feature1" name="feature1">
+{% for c in col %} 
+<option value='{{c}}'>{{c}}</option>       
+{% endfor %}
+</select>
+
 <br> Select Feature2:
 <div id="img_butt">
 {% for c in col %} 

@@ -178,11 +178,11 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv(filename)
     sums = df.groupby(df[feature1])[feature2].sum()
     plt.axis('equal')
-    explode = (0.1, 0, 0, 0, 0)  
-    plt.pie(sums, labels=sums.index, explode = explode, autopct='%1.1f%%', shadow=True, startangle=140)
+    plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Pie chart on basis of "+feature2)
     name = filename.split('.')
     plt.savefig(name[0]+".png")
+    plt.close()
 
 def feature_scatter(filename, feature1, feature2):
     df = pd.read_csv(filename)
@@ -360,9 +360,10 @@ def analyse():
     if request.method == 'GET':
         feature1 = request.args.get('feature1')
         feature2 = request.args.get('feature2')
+        if feature1 == None:
+            return render_template("analysis.html", col = col)
         feature_pie("static/"+name+".csv", feature1, feature2)
-        print("static/"+name+".png")
-        return "../static/"+name+".png"
+        return str("../static/"+name+".png")
     return render_template("analysis.html", col = col)
 
 @app.route('/anAdd', methods = ['GET', 'POST'])
@@ -375,8 +376,8 @@ def anAdd():
     for c in df.columns:
         col.append(c)
     if request.method == 'GET':
-        name = request.form['name']
-        com = request.form['formula']
+        name = request.args.get('name')
+        com = request.args.get('formula')
         new_feature(filename, com, name)
         return "../static/"+name+".png"
 
