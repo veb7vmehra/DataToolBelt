@@ -6,7 +6,6 @@ import numpy as np
 from flask import *
 import os
 from datetime import *
-import magic
 from subprocess import Popen, PIPE
 from math import floor
 
@@ -21,6 +20,7 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
 
 def new_feature(filename, feature1, feature2, ):
     #function to create feature
+    pass
 
 def disp(filename):
     df = pd.read_csv(filename)
@@ -42,13 +42,13 @@ def disp(filename):
 
 def stat(filename, feature, func):
     df = pd.read_csv(filename)
-    if func = mean:
+    if func == mean:
         ans = df[feature].mean()
-    if func = mx:
+    if func == mx:
         ans = df[feature].max()
-    if func = mn:
+    if func == mn:
         ans = df[feature].min()
-    if func = sm:
+    if func == sm:
         ans = df[feature].sum()
     return ans
 
@@ -77,17 +77,17 @@ def basic():
             lists.append(line4)
             line5 = line5.split(',')
             lists.append(line5)
-            return render_template("index.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
-    return render_template(index.html)
+            return render_template("upload.html", n_row = n_row, n_col = n_col, col = col, types = types, lists = lists)
+    return render_template("upload.html")
 
 @app.route('/stat', methods = ['GET', 'POST'])
-def stats();
+def stats():
     if request.method == 'POST':
         filename = request.form['filename']
         feature = request.form['feature']
         func = request.form['func']
         ans = stat(filename, feature, func)
-        return render_template("index.html", filename = filename, feature = feature, func = func, ans = ans)
+        return render_template("filedata.html", filename = filename, feature = feature, func = func, ans = ans)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(debug=True)
