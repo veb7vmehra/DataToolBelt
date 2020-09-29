@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DataCleaner</title>
-    <link rel="stylesheet" href="../static/base.css">
-    <script src="../static/base.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
 </head>
 <body>
     <div class="header" >
@@ -18,29 +18,13 @@
           </ul>
           </nav>
         </div>
-        <div class="maincontent">
-            <div class="file-upload-wrapper">
-                <div class="file-upload-wrapper-title">
-                    <h4>File Upload</h4>
-                    <hr />
-                    <button class="file-upload-wrapper-title__btn">
-                        Upload Now
-                    </button>
-                </div>
-                <div class="box-fileupload">
-                    <input type="file" id="fileId" class="file-upload-input" name="files" multiple>
-                    <label for="fileId" class="file-upload-btn"></label>
-                    <p class="box-fileupload__lable">Drop files here to upload</p>
-                </div>
-                <div class="error-wrapper"></div>
-                <div class="image-previwe"></div>
-            </div>
-        </div>
+        {% block input %}
+        {% endblock %}
         <script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
-        <script src="assets/js/app.js"></script>   
+        <script src="{{ url_for('static', filename='base.css') }}"></script>   
         <script>
             
             $("html").fileUplodPlugins({

@@ -6,10 +6,10 @@ import numpy as np
 from flask import *
 import os
 from datetime import *
-import magic
 from subprocess import Popen, PIPE
 from math import floor
 import converter.py as con
+from flask_ngrok import run_with_ngrok
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv (filename)
@@ -22,6 +22,7 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
 
 def new_feature(filename, feature1, feature2, ):
     #function to create feature
+    pass
 
 def disp(filename):
     df = pd.read_csv(filename)
@@ -55,8 +56,9 @@ def stat(filename, feature, func):
 
 app = Flask(__name__)
 
-app.secret_key = 'maidoublequotesmelikhrhahu'
+#app.secret_key = 'maidoublequotesmelikhrhahu'
 
+run_with_ngrok(app)
 @app.route('/', methods=['GET', 'POST'])
 def basic():
     if request.method == 'POST':
@@ -128,5 +130,6 @@ def conv():
             elif to == "csv":
                 con.xmltocsv("static/"+filename, "static/"+name+"."+to)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
+

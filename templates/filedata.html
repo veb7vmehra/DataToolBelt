@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block input %}
+    <div class="filedetails">
+        <div class="filename">
+            Filename comes here
+        </div>
+        <div class="rows">
+            Number of rows
+        </div>
+        <div class="columns">
+            Number of columns
+        </div>
+        <div class="filepreview">
+            <object data="" width="600" height="400"></object>
+        </div>
+        <table id="csvRoot"></table>
+      
+        <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
+    </div>
+{% endblock %}
