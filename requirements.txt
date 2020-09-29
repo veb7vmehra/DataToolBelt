@@ -2,5 +2,5 @@ numpy
 pandas
 flask
 flask_ngrok
-json2xml=3.5.0
+json2xml==3.5.0
 xmltodict
