@@ -8,8 +8,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
     <script src="{{ url_for('static', filename='base.js') }}"></script>
+    <style>
+      body {
+        background-image: url("{{ url_for('static', filename='bg.png') }}");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      </style>
 </head>
-<body style="text-align: center;">
+<body style="text-align: center; background: -webkit-linear-gradient(left, #2e5bd6, #ff3503);" >
     <div class="header" >
         <h2>DataToolBelt</h2>
         <nav>
