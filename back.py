@@ -10,6 +10,11 @@ from subprocess import Popen, PIPE
 from math import floor
 import converter as con
 from flask_ngrok import run_with_ngrok
+from meanShift import Mean_Shift
+from matplotlib import style
+style.use('ggplot')
+
+colors = 10*['g', 'r', 'b', 'c', 'k']
 
 from pyparsing import (
     Literal,
@@ -224,6 +229,7 @@ def new_feature(filename, com, name):
     else:
         df.insert(col, vals, True)
     """
+    del df['Unnamed: 0']
     os.remove(filename)
     df.to_csv(filename) 
 
@@ -293,6 +299,32 @@ def drop(filename, feature, condition):
     elif condition[0] == "<":
         df.drop(df[df[feature] < int(condition[1])].index, inplace = True)
 
+def ms(filename, feature1, feature2):
+    name = filename.split('.')
+    df = pd.read_csv(filename)
+    n = df.columns.get_loc(feature1)
+    mat1 = df.iloc[:, n].values
+    m = df.columns.get_loc(feature2)
+    mat2 = df.iloc[:, m].values
+    combined = np.vstack((mat1, mat2)).T
+    combined = combined.tolist()
+
+    clf = Mean_Shift()
+    clf.fit(X)
+
+    centroids = clf.centroids
+
+    for classification in clf.classifications:
+        color = colors[classification]
+        for featureset in clf.classifications[classification]:
+            plt.scatter(featureset[0], featureset[1], marker='x', color=color, s=150, linewidths=5)
+
+    for c in centroids:
+        plt.scatter(centroids[c][0], centroids[c][1], color='k', marker='*', s=150, linewidths=5)
+
+    plt.save("static/ms_"+name[0]+".png")
+    plt.close()
+
 app = Flask(__name__)
 
 #app.secret_key = 'maidoublequotesmelikhrhahu'
@@ -346,12 +378,12 @@ def stats():
 
 @app.route('/con', methods = ['GET', 'POST'])
 def conv():
-    if request.method == 'POST':
-        filename = request.form['filename']
+    if request.method == 'GET':
+        filename = request.args.get('filename')
         name = filename.split('.')
         ext = name[-1]
         name = name[0]
-        to = filename['to']
+        to = request.args.get('to')
         if ext == "csv":
             if to == "json":
                 con.csvtojson("static/"+filename, "static/"+name+"."+to)
@@ -380,8 +412,7 @@ def conv():
                 con.netCDFtocsv("static/"+filename, "static/"+name+"."+to)
             elif to == "xml":
                 con.netCDFtoxml("static/"+filename, "static/"+name+"."+to)        
-        n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name+".csv")
-        return render_template("filedata.html", filename = name+"."+to, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
+        return "../static/"+name+"."+to
     return render_template("upload.html")
 
 @app.route('/analyse', methods = ['GET', 'POST'])
@@ -461,11 +492,11 @@ def fre():
     col = []
     for c in df.columns:
         col.append(c)
-    if request.method == 'POST':
-        feature = request.form['feature']
-        cond = request.form['cond']
+    if request.method == 'GET':
+        feature = request.args.get('feature')
+        cond = request.args.get('cond')
         freq = freq(filename, feature, cond)
-        return render_template("clean.html", col = col, feature = feature, cond = cond, freq = freq)
+        return freq
     return render_template("clean.html", col = col)
 
 @app.route('/drop', methods = ['GET', 'POST'])
@@ -477,12 +508,23 @@ def dro():
     col = []
     for c in df.columns:
         col.append(c)
-    if request.method == 'POST':
-        feature = request.form['feature']
-        cond = request.form['cond']
-        dro(filename, feature, cond)
-        return render_template("clean.html", col = col, cond = cond, freq = freq)
+    if request.method == 'GET':
+        feature = request.args.get('feature')
+        cond = request.args.get('cond')
+        drop(filename, feature, cond)
+        return
     return render_template("clean.html", col = col)
+
+@app.route('/ms', methods = ['GET', 'POST'])
+def mShift():
+    filename = request.cookies.get('filename')
+    if request.method == 'POST':
+        feature1 = request.form['feature1']
+        feature2 = request.form['feature2']
+        ms(filename, feature1, feature2)
+        name = filename.split('.')
+        return render_template("meanShift.html", filename = filename, f1 = feature1, f2 = feature2, img = "static/ms_"+name[0]+".png")
+    return render_template("meanShift.html", filename = filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
