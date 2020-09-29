@@ -88,7 +88,9 @@
                     inputValue.forEach(element => {
                         let isElementVaild = checkTypeFiles(element)
 
+
                         if (isElementVaild.isValid) {
+                            
                             allData.push({
                                 id: element.lastModified,
                                 file: element

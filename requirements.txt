@@ -1,0 +1,8 @@
+numpy
+pandas
+flask
+flask_ngrok
+json2xml==3.5.0
+xmltodict
+xarray
+netCDF4
