@@ -3,18 +3,14 @@
 {% block input %}
 
 <script>
-    function del(id){
-        $("#key"+id).remove()
-        $("#value"+id).remove()
-    }
     function addVariable(){
         var count = $('#dict').children().length;
-        var selString = '<input class="value" name="value'+count+'" id="value'+count+'" onchange="if(this.value==\'\'){del('+count+')}"/>'
+        var selString = ""
         selString += '<select name="value'+count+'" id="value'+count+'">'
         {% for c in col %} 
         selString += '<option value="{{c}}">{{c}}</option>'       
         {% endfor %}
-        selString += '</select>'
+        selString += '</select><br>'
         var newDiv = $('<input class="key" name="key'+count+'" id="key'+count+'""/>'+selString);
         $('#dict').append(newDiv);
     }
@@ -62,9 +58,9 @@
 </div>
 <input type="button" onclick="addVariable()" value="Add variable">
 <input id="name" name="name" required>
-Formula: <input id="formula">
-<input type="button" onclick="makeString()">
-<img id="field_image" src="">
+Formula: <input id="formula"><br>
+<input type="button" onclick="makeString()" value="Add New Field">
+<br> Select Feature1:
 <select id="feature1" name="feature1">
 
 {% for c in col %} 
@@ -72,10 +68,12 @@ Formula: <input id="formula">
 {% endfor %}
 
 </select>
+<br> Select Feature2:
 <div id="img_butt">
 {% for c in col %} 
-<input type="button" value='{{c}}' onclick("showImg({{c}})")>{{c}}</option>       
+<input type="button" value='{{c}}' onclick("showImg({{c}})")>    
 {% endfor %}
 </div>
 
+<img id="field_image" src="">
 {% endblock %}
