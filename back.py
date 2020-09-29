@@ -192,7 +192,7 @@ def feature_scatter(filename, feature1, feature2):
     plt.savefig(name[0]+".png")
     plt.close()
 
-def new_feature(filename, com, name = " "):
+def new_feature(filename, com, name):
     df = pd.read_csv(filename)
     com = com.split(',')
     formula = "_"
@@ -203,10 +203,11 @@ def new_feature(filename, com, name = " "):
             temp = formula
     vals = []
     i = 0
+    print(name)
     if name != " ":
         i = 1
     n = len(df)
-    for j in range(i, n):
+    for j in range(n):
         for k, c in enumerate(com):
             if k%2 == 0:
                 if c == "formula":
@@ -215,11 +216,14 @@ def new_feature(filename, com, name = " "):
         vals.append(test(formula))
         formula = temp
     col = len(df.axes[1])
-    print(len(df), len(vals))
+    print(vals)
+    df[name] = vals
+    """
     if name != " ":
-        df.insert(col, name, vals, True)
+        df.insert(col, vals, True)
     else:
         df.insert(col, vals, True)
+    """
     os.remove(filename)
     df.to_csv(filename) 
 
@@ -409,6 +413,7 @@ def anAdd():
         col.append(c)
     if request.method == 'GET':
         kname = request.args.get('name')
+        print(kname)
         com = request.args.get('formula')
         new_feature("static/"+filename, com, kname)
         feature1 = request.args.get('feature1')

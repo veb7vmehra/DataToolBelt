@@ -28,7 +28,7 @@
         $.ajax({
             type:"GET",
             dataType: "text",
-            data:{'name':$("fname").val(),'formula':value,'feature1':$("#feature1").val()},
+            data:{'name':$("#fname").val(),'formula':value,'feature1':$("#feature1").val()},
             url: "/anAdd",
             success: function(data){
                 buf1=data;
