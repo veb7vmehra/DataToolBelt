@@ -33,7 +33,8 @@
             success: function(data){
                 buf1=data;
                 console.log(data);
-                $('#field_image').attr("src",data);
+                var d = new Date()
+                $('#field_image').attr("src",data+'?'+(d));
             }
         })
     }
