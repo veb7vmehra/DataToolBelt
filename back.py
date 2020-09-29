@@ -8,7 +8,7 @@ import os
 from datetime import *
 from subprocess import Popen, PIPE
 from math import floor
-import converter.py as con
+import converter as con
 from flask_ngrok import run_with_ngrok
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
@@ -58,7 +58,7 @@ app = Flask(__name__)
 
 #app.secret_key = 'maidoublequotesmelikhrhahu'
 
-run_with_ngrok(app)
+#run_with_ngrok(app)
 @app.route('/', methods=['GET', 'POST'])
 def basic():
     if request.method == 'POST':

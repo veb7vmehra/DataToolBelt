@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block input %}
-<form action="" method="post" enctype="multipart/form-data">
+<form action="/" method="POST" enctype="multipart/form-data">
     <div class="maincontent">
         <div class="file-upload-wrapper">
             <div class="file-upload-wrapper-title">
@@ -12,8 +12,8 @@
                 </button>
             </div>
             <div class="box-fileupload">
-                <input type="file" id="fileId" class="file-upload-input" name="files" multiple>
-                <label for="fileId" class="file-upload-btn"></label>
+                <input type="file" id="file" class="file-upload-input" name="file" multiple required>
+                <label for="file" class="file-upload-btn"></label>
                 <p class="box-fileupload__lable">Drop files here to upload</p>
             </div>
             <div class="error-wrapper"></div>

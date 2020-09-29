@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DataCleaner</title>
-    <link rel="stylesheet" href="../static/base.css">
-    <script src="../static/base.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
 </head>
 <body>
     <div class="header" >
@@ -36,5 +37,7 @@
                 boxErrorPreviwe: '.error-wrapper',
             })
         </script>
+        <div id="dvCSV">
+        </div>
 </body>
 </html>
