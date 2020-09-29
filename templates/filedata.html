@@ -9,35 +9,6 @@ Attributes = {{n_col}}<br>
 Entities = {{n_row}}<br>
 
 <script>
-    function deleteSame(){
-        var filename = '{{filename}}';
-    var n = filename.split('.');
-    var extension = n[1];
-    console.log(extension);
-    for(i = 1; i <= 4; i++){
-        if(document.getElementById("option"+i.toString()) == extension){
-            var element = document.getElementById("option"+i);
-            element.parentNode.removeChild(element);   
-        }
-     }
-    }
-    
-</script>
-
-<form action="" method="POST" enctype="multipart/form-data">
-    <label for="head">Convert to:</label>
-    <select id="head" name = "head">
-        <script>deleteSame();</script>
-        <option id="option1">json</option>
-        <option id="option2">csv</option>
-        <option id="option3">xml</option>
-        <option id="option4">nc</option>
-    </select>
-    <input type="button" value="Convert and Download">
-
-</form>
-
-<script>
     function getVal(){
         var value = $.ajax({
             type:"GET",
@@ -85,6 +56,17 @@ Entities = {{n_row}}<br>
         </tr>
     </table>
 </div>
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="head">Convert to:</label>
+    <select id="head" name = "head">
+        <option id="option1">{{convertable.0}}</option>
+        <option id="option2">{{convertable.1}}</option>
+        <option id="option3">{{convertable.2}}</option>
+    </select>
+    <input type="button" value="Convert and Download">
+
+</form>
+
 <form action="" method="POST" enctype="multipart/form-data">
     <label for="header1">Choose a feature:</label>
     <select id="header1" name="header1">

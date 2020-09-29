@@ -270,7 +270,7 @@ def basic():
             elif ext == "xml":
                 con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
-            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv"))
+            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]))
             res.set_cookie("filename", value=f.filename)
             return res
     return render_template("upload.html")
