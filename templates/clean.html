@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block input %}
+<div class="mainclean">
+    <div class="feature_clean">
+        <label for="f_clean">Choose a feature:</label>
+        <select id="f_clean" name="f_clean">
+
+            {% for c in col %} 
+            <option value='{{c}}'>{{c}}</option>       
+            {% endfor %}
+
+        </select>
+    </div>
+    <div class="numofzeros">
+        <div class="zeros">
+            number of 0's =
+        </div>
+        <div class="zero_drop">
+            <button type="button" onclick="">Drop</button>
+        </div>
+    </div>
+    <div class="numofna">
+        <div class="na">
+            number of NA's =
+        </div>
+        <div class="na_drop">
+            <button type="button" onclick="">Drop</button>
+        </div>
+    </div>
+    <div class="specificint">
+        <div class="specific">
+            <!--something will come here like =n, >n or <n-->
+        </div>
+        <div class="int_drop">
+            <button type="button" onclick="">Drop/search</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -175,7 +175,7 @@ def test(s):
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv(filename)
-    sums = df.groupby(df[feature1]).df[feature2].sum()
+    sums = df.groupby(df[feature1])[feature2].sum()
     plt.axis('equal')
     plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Pie chart on basis of "+feature2)
@@ -192,7 +192,7 @@ def feature_scatter(filename, feature1, feature2):
     plt.savefig(name[0]+".png")
     plt.close()
 
-def new_feature(filename, com, name = " "):
+def new_feature(filename, com, name):
     df = pd.read_csv(filename)
     com = com.split(',')
     formula = "_"
@@ -203,22 +203,27 @@ def new_feature(filename, com, name = " "):
             temp = formula
     vals = []
     i = 0
+    print(name)
     if name != " ":
         i = 1
     n = len(df)
-    for j in range(i, n):
+    for j in range(n):
         for k, c in enumerate(com):
             if k%2 == 0:
                 if c == "formula":
                     break
-                formula = formula.replace(c, df.at[j, com[k+1]])
+                formula = formula.replace(c, str(df.at[j, com[k+1]]))
         vals.append(test(formula))
         formula = temp
     col = len(df.axes[1])
+    print(vals)
+    df[name] = vals
+    """
     if name != " ":
-        df.insert(col, name, vals, True)
+        df.insert(col, vals, True)
     else:
         df.insert(col, vals, True)
+    """
     os.remove(filename)
     df.to_csv(filename) 
 
@@ -407,9 +412,11 @@ def anAdd():
     for c in df.columns:
         col.append(c)
     if request.method == 'GET':
-        kname = request.form['name']
-        com = request.form['formula']
+        kname = request.args.get('name')
+        print(kname)
+        com = request.args.get('formula')
         new_feature("static/"+filename, com, kname)
+        feature1 = request.args.get('feature1')
         feature_pie("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
