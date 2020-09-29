@@ -266,6 +266,7 @@ tr:nth-child(even) {
 }
 
 table {
+    width: 100%;
     border-collapse: collapse;
     border: 2px black solid;
     font: 12px sans-serif;

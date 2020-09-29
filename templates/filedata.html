@@ -8,10 +8,8 @@
     d3.text('{{lists}}', function(data) {
         var parsedCSV = d3.csv.parseRows(data);
 
-        var container = d3.select("body")
+        var container = d3.select("#table_container")
             .append("table")
-
-            .append("tbody")
 
             .selectAll("tr")
                 .data(parsedCSV).enter()
@@ -39,4 +37,5 @@
     </select>
     <input type="submit">
 </form>
+<div id="table_container" style="overflow-y: auto;max-height: 600px;width: 100%;"></div>
 {% endblock %}
