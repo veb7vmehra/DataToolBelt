@@ -6,7 +6,7 @@
 .header{
   width:100%;
   height:80px;
-  border:1px solid red;
+  border:1px solid white;
   animation: cambia-color 10s linear infinite;
     background: -webkit-linear-gradient(left, #7a26dd, #e80808);
     background-size: 400% 400%;

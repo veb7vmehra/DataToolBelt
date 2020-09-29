@@ -18,6 +18,10 @@
             })
         }
         $(document).ready(function () {
+            $("#submit").on('click', function(event) {
+                alert("Submit button is clicked!");
+                //event.preventDefault();
+              });
             const removeBtn = (id) => {
                 let span = document.createElement('span');
                 span.setAttribute('class', 'image-previwe__delete-btn');
@@ -99,6 +103,8 @@
                     });
                 }
             }
+
+           
 
             function DragAndDropUpload(input) {
                 let inputValue = Object.values(input)
