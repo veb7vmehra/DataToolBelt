@@ -1,5 +1,6 @@
 # hackathon T - Hacks 3.0
 # flask backend of data-cleaning website
+print("Hello")
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -179,7 +180,20 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
     plt.axis('equal')
     explode = (0.1, 0, 0, 0, 0)  
     plt.pie(sums, labels=sums.index, explode = explode, autopct='%1.1f%%', shadow=True, startangle=140)
+<<<<<<< HEAD
+    plt.title("Pie chart on basis of "+feature2)
+    name = filename.split('.')
+    plt.savefig(name[0]+".png")
+
+def feature_scatter(filename, feature1, feature2):
+    df = pd.read_csv(filename)
+    sums = df.groupby(df[feature1])[feature2].sum()
+    plt.axis('equal')
+    plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
+    plt.title("Scatter plot between "+feature1+" and "+feature2)
+=======
     plt.title("Pie chart on basis of "+feature1)
+>>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
     name = filename.split('.')
     plt.savefig(name[0]+".png")
 
@@ -269,6 +283,8 @@ def basic():
                 con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
                 con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
+            elif ext == "nc"
+                con.netCDFtocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
             res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]))
             res.set_cookie("filename", value=f.filename)
@@ -284,6 +300,11 @@ def stats():
         name = name[0]
         if ext == "json":
             con.jsontocsv("static/"+filename, "static/"+name+".csv")
+<<<<<<< HEAD
+        elif ext == "nc":
+            con.netCDFtocsv("static/"+filename, "static/"+name+".csv")
+=======
+>>>>>>> 4d7aab5919b684f17091c5aab35d829db6139cd8
         elif ext == "xml":
             con.xmltocsv("static/"+filename, "static/"+name+".csv")
         feature = request.args.get('feature')
@@ -306,16 +327,29 @@ def conv():
                 con.csvtojson("static/"+filename, "static/"+name+"."+to)
             elif to == "xml":
                 con.csvtoxml("static/"+filename, "static/"+name+"."+to)
+            elif to == "nc":
+                con.csvtonetCDF("static/"+filename, "static/"+name+"."+to)
         elif ext == "json":
             if to == "csv":
                 con.jsontocsv("static/"+filename, "static/"+name+"."+to)
             elif to == "xml":
                 con.jsontoxml("static/"+filename, "static/"+name+"."+to)
+            elif to == "nc":
+                con.jsontonetCDF("static/"+filename, "static/"+name+"."+to)
         elif ext == "xml":
             if to == "json":
                 con.xmltojson("static/"+filename, "static/"+name+"."+to)
             elif to == "csv":
                 con.xmltocsv("static/"+filename, "static/"+name+"."+to)
+            elif to == "nc":
+                con.xmltonetCDF("static/"+filename, "static/"+name+"."+to)
+        elif ext == "nc":
+            if to == "json":
+                con.netCDFtojson("static/"+filename, "static/"+name+"."+to)
+            elif to == "csv":
+                con.netCDFtocsv("static/"+filename, "static/"+name+"."+to)
+            elif to == "xml":
+                con.netCDFtoxml("static/"+filename, "static/"+name+"."+to)        
         n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name+".csv")
         return render_template("filedata.html", filename = name+"."+to, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv")
     return render_template("upload.html")
@@ -335,6 +369,52 @@ def analyse():
         feature_pie("static/"+name+".csv", feature1, feature2)
         return render_template("analysis.html", col = col, img = "static/"+name+".png")
     return render_template("analysis.html", col = col)
+
+@app.route('/anAdd', methods = ['GET', 'POST'])
+def anAdd():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'GET':
+        name = request.form['name']
+        com = request.form['formula']
+        new_feature(filename, com, name)
+        return "../static/"+name+".png"
+
+@app.route('/clean', methods = ['GET', 'POST'])
+def analyse():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'POST':
+        feature1 = request.form['feature1']
+        feature2 = request.form['feature2']
+        feature_scatter("static/"+name+".csv", feature1, feature2)
+        return render_template("clean.html", col = col, img = "static/"+name+".png")
+    return render_template("clean.html", col = col)
+
+@app.route('/clAdd', methods = ['GET', 'POST'])
+def clAdd():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'GET':
+        name = request.form['name']
+        com = request.form['formula']
+        new_feature(filename, com, name)
+        return "../static/"+name+".png"
 
 if __name__ == '__main__':
     app.run(debug=True)
