@@ -233,3 +233,27 @@ label.file-upload-btn {
     color: #b00707;
     margin: 10px;
 }
+
+table {
+    border-collapse: collapse;
+    border-radius: 5px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+th {
+    background: #009578;
+    color: #ffffff;
+    text-align: left;
+}
+
+th,td {
+    padding: 10px 20px;
+}
+
+tr:nth-child(even) {
+    background: #eeeeee;
+}
