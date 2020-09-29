@@ -261,6 +261,10 @@ def basic():
             name = f.filename.split('.')
             ext = name[-1]
             name = name[0]
+            if ext == "csv":
+                con.csvtojson("static/"+f.filename, "static/"+name+".json")
+                os.remove("static/"+f.filename)
+                con.jsontocsv("static/"+name+".json", "static/"+f.filename)
             if ext == "json":
                 con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
