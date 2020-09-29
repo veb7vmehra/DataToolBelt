@@ -11,6 +11,8 @@
         var container = d3.select("body")
             .append("table")
 
+            .append("tbody")
+
             .selectAll("tr")
                 .data(parsedCSV).enter()
                 .append("tr")
@@ -21,4 +23,20 @@
                 .text(function(d) { return d; });
     });
 </script>
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="header1">Choose a feature:</label>
+    <select id="header1" name="header1">
+
+        <option value="max">Maximum</option>
+
+    </select>
+    <label for="features">Choose a function:</label>
+    <select id="functions" name="functions">
+        <option value="max">Maximum</option>
+        <option value="min">Minimum</option>
+        <option value="mean">Mean (average)</option>
+        <option value="sum">Sum</option>
+    </select>
+    <input type="submit">
+</form>
 {% endblock %}
