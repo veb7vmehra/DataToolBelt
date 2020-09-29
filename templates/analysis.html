@@ -17,16 +17,18 @@
 
     function makeString(){
         var array = []
-        $("#dict").each(function(){
+        $("#dict").children().each(function(){
+            if($(this).is('br')) return
             array.push($(this).val()) 
         })
         array.push("formula")
-        array($("#formula")) 
-        var value = array(",")
+        array.push($("#formula").val()) 
+        var value = array.join(",")
+        console.log(value)
         $.ajax({
             type:"GET",
             dataType: "text",
-            data:{'name':value,'feature1':$("#feature1").val()},
+            data:{'name':$("fname").val(),'formula':value,'feature1':$("#feature1").val()},
             url: "/anAdd",
             success: function(data){
                 buf1=data;
@@ -64,7 +66,7 @@
 <div id="dict">
 </div>
 <input type="button" onclick="addVariable()" value="Add variable"><br>
-Field Name: <input id="name" name="name" required>
+Field Name: <input id="fname" name="fname" required>
 Formula: <input id="formula"><br>
 
 <input type="button" onclick="makeString()" value="Add New Field">

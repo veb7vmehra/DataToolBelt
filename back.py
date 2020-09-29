@@ -175,7 +175,7 @@ def test(s):
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv(filename)
-    sums = df.groupby(df[feature1]).df[feature2].sum()
+    sums = df.groupby(df[feature1])[feature2].sum()
     plt.axis('equal')
     plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Pie chart on basis of "+feature2)
@@ -211,10 +211,11 @@ def new_feature(filename, com, name = " "):
             if k%2 == 0:
                 if c == "formula":
                     break
-                formula.replace(c, df.at[j, com[k+1]])
+                formula = formula.replace(c, str(df.at[j, com[k+1]]))
         vals.append(test(formula))
         formula = temp
-    col = len(df.axes[1]) + 2
+    col = len(df.axes[1])
+    print(len(df), len(vals))
     if name != " ":
         df.insert(col, name, vals, True)
     else:
@@ -407,9 +408,10 @@ def anAdd():
     for c in df.columns:
         col.append(c)
     if request.method == 'GET':
-        kname = request.form['name']
-        com = request.form['formula']
-        new_feature(filename, com, kname)
+        kname = request.args.get('name')
+        com = request.args.get('formula')
+        new_feature("static/"+filename, com, kname)
+        feature1 = request.args.get('feature1')
         feature_pie("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
@@ -441,7 +443,7 @@ def clAdd():
     if request.method == 'GET':
         kname = request.form['name']
         com = request.form['formula']
-        new_feature(filename, com, kname)
+        new_feature("static/"+filename, com, kname)
         feature_scatter("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
