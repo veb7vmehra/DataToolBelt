@@ -1,10 +1,97 @@
 {% extends "base.html" %}
 
 {% block input %}
+<script>
+    function setzero(id){
+        if($(id).val() == "Search"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':"= 0"},
+                url: "/freq",
+                success: function(data){
+                    buf1=data;
+                    $('#nzero').val(data);
+                    $(id).val("Drop");
+                }
+            })
+        }
+        if($(id).val() == "Drop"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':"= 0"},
+                url: "/drop",
+                success: function(data){
+                    buf1=data;
+                    $('#nzero').val("");
+                    $(id).val("Search");
+                }
+            })
+        }
+    }
+    
+    function setna(id){
+        if($(id).val() == "Search"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':"= N/A"},
+                url: "/freq",
+                success: function(data){
+                    buf1=data;
+                    $('#nna').val(data);
+                    $(id).val("Drop");
+                }
+            })
+        }
+        if($(id).val() == "Drop"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':"= N/A"},
+                url: "/drop",
+                success: function(data){
+                    buf1=data;
+                    $('#nna').val("");
+                    $(id).val("Search");
+                }
+            })
+        }
+    }
+    function setrange(id){
+        if($(id).val() == "Search"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':$("#compare").val()+" "+$("#lim").val()},
+                url: "/freq",
+                success: function(data){
+                    buf1=data;
+                    $('#nrange').val(data);
+                    $(id).val("Drop");
+                }
+            })
+        }
+        if($(id).val() == "Drop"){
+            $.ajax({
+                type:"GET",
+                dataType: "text",
+                data:{'feature':$("#f_clean").val(),'cond':$("#compare").val()+" "+$("#lim").val()},
+                url: "/drop",
+                success: function(data){
+                    buf1=data;
+                    $('#nrange').val("");
+                    $(id).val("Search");
+                }
+            })
+        }
+    }
+</script>
 <div class="mainclean" style="display: -webkit-inline-box;position: relative; right: 6%; align-self: center;">
     <div class="feature_clean" style="padding: 4%;">
         <label for="f_clean">Choose a feature:</label>
-        <select id="f_clean" name="f_clean">
+        <select id="f_clean" name="f_clean" onchange="$('#rangeName').val($(this).val())">
 
             {% for c in col %} 
             <option value='{{c}}'>{{c}}</option>       
@@ -14,26 +101,31 @@
     </div>
     <div class="numofzeros" style="padding: 4%;" >
         <div class="zeros">
-            number of 0's =
+            number of 0's = <input disabled id="nzero">
         </div>
         <div class="zero_drop">
-            <button type="button" onclick="">Drop</button>
+            <input type="button" onclick="setzero(this)" value="Search">
         </div>
     </div>
     <div class="numofna" style="padding: 4%;">
         <div class="na">
-            number of NA's =
+            number of NA's = <input disabled id="nna">
         </div>
         <div class="na_drop">
-            <button type="button" onclick="">Drop</button>
+            <input type="button" onclick="setna(this)" value="Search">
         </div>
     </div>
     <div class="specificint" style="padding: 4%;">
-        <div class="specific">
-            <!--something will come here like =n, >n or <n-->
-        </div>
+        <input disabled id = "rangeName">
+        <select id="compare" name="compare">
+            <option value="=">=</option>
+            <option value="&lt"><</option>
+            <option value=">">></option>
+        </select>
+        <input type="number" id = "lim">
+        number of rows = <input disabled id="nrange">
         <div class="int_drop">
-            <button type="button" onclick="">Drop/search</button>
+            <input type="button" onclick="setrange(this)" value="Search">
         </div>
     </div>
 </div>

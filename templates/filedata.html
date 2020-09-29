@@ -22,6 +22,26 @@ Entities = {{n_row}}<br>
             }
         })
     }
+    function downloadFile(){
+        var inp = '{{filename}}';
+        var out = (inp.split('.').pop()).join('.') + $("#head").val();
+        if(inp == out){
+            return;
+        }
+        var value = $.ajax({
+            type:"GET",
+            dataType: "json",
+            data:{'filename':inp,'to': $("#head").val()},
+            url: "/download",
+            success: function(data){
+                buf1=data;
+                var link = document.createElement("a");
+                link.download = out;
+                link.href = data;
+                link.click();
+            }
+        })
+    }
 </script>
 
 <script type="text/javascript"charset="utf-8">
@@ -56,16 +76,14 @@ Entities = {{n_row}}<br>
         </tr>
     </table>
 </div>
-<form action="" method="POST" enctype="multipart/form-data">
-    <label for="head">Convert to:</label>
-    <select id="head" name = "head" style="margin: 1%;">
-        <option id="option1">{{convertable.0}}</option>
-        <option id="option2">{{convertable.1}}</option>
-        <option id="option3">{{convertable.2}}</option>
-    </select>
-    <input type="button" value="Convert and Download" style="margin: 1%;">
-
-</form>
+<label for="head">Convert to:</label>
+<select id="head" name = "head">
+    <option value="csv">csv</option>
+    <option value="json">json</option>
+    <option value="netCDF">netCDF</option>
+    <option value="xml">xml</option>
+</select>
+<input type="button" onclick="downloadFile()" value="Convert and Download">
 
 <form action="" method="POST" enctype="multipart/form-data">
     <label for="header1">Choose a feature:</label>
