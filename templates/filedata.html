@@ -57,6 +57,17 @@ Entities = {{n_row}}<br>
     </table>
 </div>
 <form action="" method="POST" enctype="multipart/form-data">
+    <label for="head">Convert to:</label>
+    <select id="head" name = "head">
+        <option id="option1">{{convertable.0}}</option>
+        <option id="option2">{{convertable.1}}</option>
+        <option id="option3">{{convertable.2}}</option>
+    </select>
+    <input type="button" value="Convert and Download">
+
+</form>
+
+<form action="" method="POST" enctype="multipart/form-data">
     <label for="header1">Choose a feature:</label>
     <select id="header1" name="header1">
 

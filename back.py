@@ -177,8 +177,7 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
     df = pd.read_csv(filename)
     sums = df.groupby(df[feature1]).df[feature2].sum()
     plt.axis('equal')
-    explode = (0.1, 0, 0, 0, 0)  
-    plt.pie(sums, labels=sums.index, explode = explode, autopct='%1.1f%%', shadow=True, startangle=140)
+    plt.pie(sums, labels=sums.index, autopct='%1.1f%%', shadow=True, startangle=140)
     plt.title("Pie chart on basis of "+feature2)
     name = filename.split('.')
     plt.savefig(name[0]+".png")
@@ -312,10 +311,10 @@ def basic():
                 con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
                 con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
-            elif ext == "nc"
+            elif ext == "nc":
                 con.netCDFtocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
-            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv"))
+            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]))
             res.set_cookie("filename", value=f.filename)
             return res
     return render_template("upload.html")
@@ -389,11 +388,13 @@ def analyse():
     col = []
     for c in df.columns:
         col.append(c)
-    if request.method == 'POST':
-        feature1 = request.form['feature1']
-        feature2 = request.form['feature2']
+    if request.method == 'GET':
+        feature1 = request.args.get('feature1')
+        feature2 = request.args.get('feature2')
+        if feature1 == None:
+            return render_template("analysis.html", col = col)
         feature_pie("static/"+name+".csv", feature1, feature2)
-        return render_template("analysis.html", col = col, img = "static/"+name+".png")
+        return str("../static/"+name+".png")
     return render_template("analysis.html", col = col)
 
 @app.route('/anAdd', methods = ['GET', 'POST'])
