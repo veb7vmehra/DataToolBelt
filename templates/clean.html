@@ -2,6 +2,60 @@
 
 {% block input %}
 <script>
+    function addVariable(){
+        var count = $('#dict').children().length;
+        var selString = ""
+        selString += '<select name="value'+count+'" id="value'+count+'">'
+        {% for c in col %} 
+        selString += '<option value="{{c}}">{{c}}</option>'       
+        {% endfor %}
+        selString += '</select><br>'
+        var newDiv = $('<input class="key" name="key'+count+'" id="key'+count+'""/>'+selString);
+        $('#dict').append(newDiv);
+    }
+
+    function makeString(){
+        var array = []
+        $("#dict").children().each(function(){
+            if($(this).is('br')) return
+            array.push($(this).val()) 
+        })
+        array.push("formula")
+        array.push($("#formula").val()) 
+        var value = array.join(",")
+        console.log(value)
+        $.ajax({
+            type:"GET",
+            dataType: "text",
+            data:{'name':$("#fname").val(),'formula':value,'feature1':$("#feature1").val()},
+            url: "/clAdd",
+            success: function(data){
+                buf1=data;
+                console.log(data);
+                var d = new Date()
+                $('#field_image').attr("src",data+'?'+(d));
+            }
+        })
+    }
+    function showImg(id){
+        if(id == $("#feature1").val()){
+            return;
+        }
+        var value = $.ajax({
+            type:"GET",
+            dataType: "text",
+            data:{'feature2':$("#feature1").val(),'feature1':id},
+            url: "/clean",
+            success: function(data){
+                buf2=data;
+                var d = new Date()
+                $('#field_image').attr("src",data+'?'+(d));
+            }
+        })
+    }
+</script>
+
+<script>
     function setzero(id){
         if($(id).val() == "Search"){
             $.ajax({
@@ -129,4 +183,29 @@
         </div>
     </div>
 </div>
+
+<br> Select Feature1:
+<select id="feature1" name="feature1" style="margin: 2%;">
+{% for c in col %} 
+<option value='{{c}}'>{{c}}</option>       
+{% endfor %}
+</select>
+
+
+<div id="dict">
+</div>
+<input type="button" onclick="addVariable()" value="Add variable" style="margin-bottom: 1%;"><br>
+Field Name: <input id="fname" name="fname" required style="margin: 1% 1% 1% 0%;">
+Formula: <input id="formula" syle="margin: 1% 1% 1% 0%;"><br>
+
+<input type="button" onclick="makeString()" value="Add New Field" style="margin: 1.2%;">
+
+<br> Select Feature2:
+<div id="img_butt">
+{% for c in col %} 
+<input type="button" value='{{c}}' onclick="showImg('{{c}}')" style="margin: 0.3%;">    
+{% endfor %}
+</div>
+
+<img id="field_image" src="">
 {% endblock %}
