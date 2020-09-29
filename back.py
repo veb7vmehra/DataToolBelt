@@ -8,7 +8,7 @@ import os
 from datetime import *
 from subprocess import Popen, PIPE
 from math import floor
-import converter.py as con
+import converter as con
 from flask_ngrok import run_with_ngrok
 
 def feature_pie(filename, feature1, feature2, class_size = 10):
@@ -20,8 +20,14 @@ def feature_pie(filename, feature1, feature2, class_size = 10):
     plt.title("Pie chart on basis of "+feature1)
     plt.show()
 
-def new_feature(filename, feature1, feature2, ):
-    #function to create feature
+def new_feature(filename, com, name):
+    com = com.split(',')
+    for i, c in enumerate(com):
+        if i%2 == 0:
+            global exec("%s = %s" % (c,com[i+1]))
+            if c == "formula":
+                break
+    exec("%s = %d" % (a,b))
     pass
 
 def disp(filename):
@@ -66,13 +72,13 @@ def basic():
             f = request.files.get('file')
             varrr = "static/"+f.filename
             err=f.save(varrr)
-            name = filename('.')
+            name = f.filename.split('.')
             ext = name[-1]
             name = name[0]
             if ext == "json":
-                con.jsontocsv("static/"+filename, "static/"+name+".csv")
+                con.jsontocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "xml":
-                con.xmltocsv("static/"+filename, "static/"+name+".csv")
+                con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
             n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
             lists = []
             line0 = line0.split(',')
@@ -132,4 +138,3 @@ def conv():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
