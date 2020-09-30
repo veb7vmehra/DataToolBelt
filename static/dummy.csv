@@ -1,63 +1,63 @@
 ,Field_1,Field_2,Field_3,Field_4
-0,,Apple,4,133
-1,,Apricot,5,175
-2,,Avocado,5,182
-3,,Banana,5,187
-4,,Bilberry,5,160
-5,,Blackberry,4,178
-6,,Blackcurrant,5,102
-7,,Blueberry,6,156
-8,,Currant,5,194
-9,,Cherry,5,182
-10,,Cherimoya,3,169
-11,,Clementine,3,165
-12,,Date,6,112
-13,,Damson,1,164
-14,,Durian,2,157
-15,,Eggplant,6,189
-16,,Elderberry,3,189
-17,,Feijoa,2,198
-18,,Gooseberry,2,141
-19,,Grape,2,101
-20,,Grapefruit,5,199
-21,,Guava,1,160
-22,,Huckleberry,6,197
-23,,Jackfruit,6,181
-24,,Jambul,6,117
-25,,Kiwi fruit,1,123
-26,,Kumquat,2,198
-27,,Legume,6,199
-28,,Lemon,3,120
-29,,Lime,3,165
-30,,Lychee,6,120
-31,,Mango,6,131
-32,,Mangostine,1,181
-33,,Melon,4,159
-34,,Cantaloupe,4,138
-35,,Honeydew melon,4,155
-36,,Watermelon,5,176
-37,,Rock melon,2,180
-38,,Nectarine,1,128
-39,,Orange,6,142
-40,,Peach,6,179
-41,,Pear,3,102
-42,,Williams pear or Bartlett pear,1,164
-43,,Pitaya,2,170
-44,,Physalis,5,166
-45,,Plum/prune (dried plum),4,103
-46,,Pineapple,3,120
-47,,Pomegranate,5,112
-48,,Raisin,4,111
-49,,Raspberry,5,156
-50,,Western raspberry (blackcap),6,173
-51,,Rambutan,6,145
-52,,Redcurrant,3,190
-53,,Salal berry,3,137
-54,,Satsuma,1,197
-55,,Star fruit,4,142
-56,,Strawberry,6,178
-57,,Tangerine,4,119
-58,,Tomato,6,167
-59,,Ugli fruit,4,179
-60,,Watermelon,6,149
-61,,Ziziphus mauritiana,5,180
+0,1000,Apple,4,133
+1,1001,Apricot,5,175
+2,1002,Avocado,5,182
+3,1003,Banana,5,187
+4,1004,Bilberry,5,160
+5,1005,Blackberry,4,178
+6,1006,Blackcurrant,5,102
+7,1007,Blueberry,6,156
+8,1008,Currant,5,194
+9,1009,Cherry,5,182
+10,1010,Cherimoya,3,169
+11,1011,Clementine,3,165
+12,1012,Date,6,112
+13,1013,Damson,1,164
+14,1014,Durian,2,157
+15,1015,Eggplant,6,189
+16,1016,Elderberry,3,189
+17,1017,Feijoa,2,198
+18,1018,Gooseberry,2,141
+19,1019,Grape,2,101
+20,1020,Grapefruit,5,199
+21,1021,Guava,1,160
+22,1022,Huckleberry,6,197
+23,1023,Jackfruit,6,181
+24,1024,Jambul,6,117
+25,1025,Kiwi fruit,1,123
+26,1026,Kumquat,2,198
+27,1027,Legume,6,199
+28,1028,Lemon,3,120
+29,1029,Lime,3,165
+30,1030,Lychee,6,120
+31,1031,Mango,6,131
+32,1032,Mangostine,1,181
+33,1033,Melon,4,159
+34,1034,Cantaloupe,4,138
+35,1035,Honeydew melon,4,155
+36,1036,Watermelon,5,176
+37,1037,Rock melon,2,180
+38,1038,Nectarine,1,128
+39,1039,Orange,6,142
+40,1040,Peach,6,179
+41,1041,Pear,3,102
+42,1042,Williams pear or Bartlett pear,1,164
+43,1043,Pitaya,2,170
+44,1044,Physalis,5,166
+45,1045,Plum/prune (dried plum),4,103
+46,1046,Pineapple,3,120
+47,1047,Pomegranate,5,112
+48,1048,Raisin,4,111
+49,1049,Raspberry,5,156
+50,1050,Western raspberry (blackcap),6,173
+51,1051,Rambutan,6,145
+52,1052,Redcurrant,3,190
+53,1053,Salal berry,3,137
+54,1054,Satsuma,1,197
+55,1055,Star fruit,4,142
+56,1056,Strawberry,6,178
+57,1057,Tangerine,4,119
+58,1058,Tomato,6,167
+59,1059,Ugli fruit,4,179
+60,1060,Watermelon,6,149
+61,1061,Ziziphus mauritiana,5,180
