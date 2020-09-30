@@ -1,6 +1,8 @@
 # hackathon T - Hacks 3.0
 # flask backend of data-cleaning website
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras import layers
 import pandas as pd
 import numpy as np
 from flask import *
@@ -12,7 +14,12 @@ import converter as con
 from flask_ngrok import run_with_ngrok
 from meanShift import Mean_Shift
 from matplotlib import style
+import seaborn as sns
 style.use('ggplot')
+from sklearn.model_selection import train_test_split
+
+pd.options.display.max_rows = 10
+pd.options.display.float_format = "{:.1f}".format
 
 colors = 10*['g', 'r', 'b', 'c', 'k']
 
@@ -325,6 +332,82 @@ def ms(filename, feature1, feature2):
     plt.save("static/ms_"+name[0]+".png")
     plt.close()
 
+def dataDivide(df, percent):
+    train_df=df.sample(frac=percent,random_state=200) #random state is a seed value
+    test_df=df.drop(train.index)
+    return train_df, test_df
+
+def scale(train_df, test_df, scale = 1):
+    train_df["median_house_value"] /= scale_factor 
+    test_df["median_house_value"] /= scale_factor
+    return train_df, test_df
+
+def build_model(my_learning_rate):
+  """Create and compile a simple linear regression model."""
+  # Most simple tf.keras models are sequential.
+  model = tf.keras.models.Sequential()
+
+  # Add one linear layer to the model to yield a simple linear regressor.
+  model.add(tf.keras.layers.Dense(units=1, input_shape=(1,)))
+
+  # Compile the model topography into code that TensorFlow can efficiently
+  # execute. Configure training to minimize the model's mean squared error. 
+  model.compile(optimizer=tf.keras.optimizers.RMSprop(lr=my_learning_rate),
+                loss="mean_squared_error",
+                metrics=[tf.keras.metrics.RootMeanSquaredError()])
+
+  return model               
+
+def train_model(model, df, feature, label, my_epochs, 
+                my_batch_size=None, my_validation_split=0.1):
+  """Feed a dataset into the model in order to train it."""
+
+  history = model.fit(x=df[feature],
+                      y=df[label],
+                      batch_size=my_batch_size,
+                      epochs=my_epochs,
+                      validation_split=my_validation_split)
+
+  # Gather the model's trained weight and bias.
+  trained_weight = model.get_weights()[0]
+  trained_bias = model.get_weights()[1]
+
+  # The list of epochs is stored separately from the 
+  # rest of history.
+  epochs = history.epoch
+  
+  # Isolate the root mean squared error for each epoch.
+  hist = pd.DataFrame(history.history)
+  rmse = hist["root_mean_squared_error"]
+
+  return epochs, rmse, history.history
+
+def plot_the_loss_curve(epochs, mae_training, mae_validation, filename):
+  name = filename.split('.')
+  """Plot a curve of loss vs. epoch."""
+
+  plt.figure()
+  plt.xlabel("Epoch")
+  plt.ylabel("Root Mean Squared Error")
+
+  plt.plot(epochs[1:], mae_training[1:], label="Training Loss")
+  plt.plot(epochs[1:], mae_validation[1:], label="Validation Loss")
+  plt.legend()
+  
+  # We're not going to plot the first epoch, since the loss on the first epoch
+  # is often substantially greater than the loss for other epochs.
+  merged_mae_lists = mae_training[1:] + mae_validation[1:]
+  highest_loss = max(merged_mae_lists)
+  lowest_loss = min(merged_mae_lists)
+  delta = highest_loss - lowest_loss
+  print(delta)
+
+  top_of_y_axis = highest_loss + (delta * 0.05)
+  bottom_of_y_axis = lowest_loss - (delta * 0.05)
+   
+  plt.ylim([bottom_of_y_axis, top_of_y_axis])
+  plt.save("static/nn_"+name[0]+".png")
+
 app = Flask(__name__)
 
 #app.secret_key = 'maidoublequotesmelikhrhahu'
@@ -355,6 +438,13 @@ def basic():
             res.set_cookie("filename", value=f.filename)
             return res
     return render_template("upload.html")
+
+@app.route('/info', methods=['GET', 'POST'])
+def info():
+    filename = request.cookies.get('filename')
+    name = filename.split('.')
+    n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name[0]+".csv")
+    render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]    
 
 @app.route('/stat', methods = ['GET', 'POST'])
 def stats():
@@ -518,13 +608,60 @@ def dro():
 @app.route('/ms', methods = ['GET', 'POST'])
 def mShift():
     filename = request.cookies.get('filename')
-    if request.method == 'POST':
-        feature1 = request.form['feature1']
-        feature2 = request.form['feature2']
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    if request.method == 'GET':
+        feature1 = request.args.get('feature1')
+        feature2 = request.args.get('feature2')
         ms(filename, feature1, feature2)
         name = filename.split('.')
-        return render_template("meanShift.html", filename = filename, f1 = feature1, f2 = feature2, img = "static/ms_"+name[0]+".png")
-    return render_template("meanShift.html", filename = filename)
+        return "../static/ms_"+name[0]+".png"
+    return render_template("meanShift.html", filename = filename, col = col)
+
+@app.route('/nn', methods = ['GET', 'POST'])
+def neural():
+    name = filename.split('.')
+    name = name[0]
+    df = pd.read_csv("static/"+name+".csv")
+    col = []
+    for c in df.columns:
+        col.append(c)
+    filename = request.cookies.get('filename')
+    if request.method == 'GET':
+        percent = request.args.get('percent')
+        scale = request.args.get('scale')
+        df = pd.read_csv("static/"+filename)
+        train_df, test_df = dataDivide(df, percent)
+        scale(train_df, test_df, scale)
+        learning_rate = request.args.get('learning_rate')
+        epochs = request.args.get('epochs')
+        batch_size = request.args.get('batch_size')
+
+        # Split the original training set into a reduced training set and a
+        # validation set. 
+        validation_split=request.args.get('validation_split')
+
+        # Identify the feature and the label.
+        my_feature=request.args.get('feature1')  # the median income on a specific city block.
+        my_label=request.args.get('feature2') # the median value of a house on a specific city block.
+        # That is, you're going to create a model that predicts house value based 
+        # solely on the neighborhood's median income.  
+
+        # Discard any pre-existing version of the model.
+        my_model = None
+
+        # Invoke the functions to build and train the model.
+        my_model = build_model(learning_rate)
+        epochs, rmse, history = train_model(my_model, train_df, my_feature, my_label, epochs, batch_size, validation_split)
+
+        plot_the_loss_curve(epochs, history["root_mean_squared_error"], history["val_root_mean_squared_error"])
+
+        return "../static/nn_"+name[0]+".png"
+    return render_template("meanShift.html", filename = filename, col = col)
 
 if __name__ == '__main__':
     app.run(debug=True)
