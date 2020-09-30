@@ -279,15 +279,23 @@ def freq(filename, feature, condition):
     condition = condition.split(' ')
     if condition[0] == "=":
         counts = df[feature].value_counts().to_dict()
-        return counts[int(condition[1])]
+        if condition[1] == 'N/A':
+            try:
+                return str(counts['N/A'])
+            except:
+                return '0'
+        try:
+            return str(counts[int(condition[1])])
+        except:
+            return '0'
     elif condition[0] == ">":
         count = 0
         df = pd.read_csv(filename)
         n = df.columns.get_loc(feature)
         for i in range(len(df)):
-            if df.at[i, n] > int(condition[1]):
+            if int(df.at[i, n]) > int(condition[1]):
                 count = count + 1
-        return count
+        return str(count)
     elif condition[0] == "<":
         count = 0
         df = pd.read_csv(filename)
