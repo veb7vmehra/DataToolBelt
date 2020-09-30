@@ -42,7 +42,7 @@ class Mean_Shift:
                 centroid = centroids[i]
 
                 for featureset in data:
-                    distance = np.linalg.norm(featureset-centroid)
+                    distance = np.linalg.norm(np.array(featureset)-np.array(centroid))
                     if distance == 0:
                         distance = 0.0000000001
                     weight_index = int(distance/self.radius)

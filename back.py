@@ -317,7 +317,7 @@ def ms(filename, feature1, feature2):
     combined = combined.tolist()
 
     clf = Mean_Shift()
-    clf.fit(X)
+    clf.fit(combined)
 
     centroids = clf.centroids
 
@@ -329,7 +329,7 @@ def ms(filename, feature1, feature2):
     for c in centroids:
         plt.scatter(centroids[c][0], centroids[c][1], color='k', marker='*', s=150, linewidths=5)
 
-    plt.save("static/ms_"+name[0]+".png")
+    plt.savefig("static/ms_"+name[0].split('/')[-1]+".png")
     plt.close()
 
 def dataDivide(df, percent):
@@ -444,9 +444,9 @@ def info():
     filename = request.cookies.get('filename')
     name = filename.split('.')
     n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name[0]+".csv")
-    render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]    
+    return render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"])
 
-@app.route('/stat', methods = ['GET', 'POST'])
+@app.route('/stat', methods=['GET', 'POST'])
 def stats():
     if request.method == 'GET':
         filename = request.args.get('filename').split('/')[-1]
@@ -617,7 +617,9 @@ def mShift():
     if request.method == 'GET':
         feature1 = request.args.get('feature1')
         feature2 = request.args.get('feature2')
-        ms(filename, feature1, feature2)
+        if feature1 == None:
+            return render_template("meanShift.html", filename = filename, col = col)
+        ms('static/'+filename, feature1, feature2)
         name = filename.split('.')
         return "../static/ms_"+name[0]+".png"
     return render_template("meanShift.html", filename = filename, col = col)
