@@ -24,15 +24,18 @@ Entities = {{n_row}}<br>
     }
     function downloadFile(){
         var inp = '{{filename}}';
-        var out = (inp.split('.').pop()).join('.') + $("#head").val();
+        var out = inp.split('.')
+        out.pop();
+        out.push($("#head").val());
+        out = out.join('.');
         if(inp == out){
             return;
         }
         var value = $.ajax({
             type:"GET",
-            dataType: "json",
+            dataType: "text",
             data:{'filename':inp,'to': $("#head").val()},
-            url: "/download",
+            url: "/con",
             success: function(data){
                 buf1=data;
                 var link = document.createElement("a");
@@ -80,7 +83,7 @@ Entities = {{n_row}}<br>
 <select id="head" name = "head">
     <option value="csv">csv</option>
     <option value="json">json</option>
-    <option value="netCDF">netCDF</option>
+    <option value="nc">netCDF</option>
     <option value="xml">xml</option>
 </select>
 <input type="button" onclick="downloadFile()" value="Convert and Download">
