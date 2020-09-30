@@ -1,8 +1,8 @@
 # hackathon T - Hacks 3.0
 # flask backend of data-cleaning website
 import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow.keras import layers
+#import tensorflow as tf
+#from tensorflow.keras import layers
 import pandas as pd
 import numpy as np
 from flask import *
@@ -14,7 +14,7 @@ import converter as con
 from flask_ngrok import run_with_ngrok
 from meanShift import Mean_Shift
 from matplotlib import style
-import seaborn as sns
+#import seaborn as sns
 style.use('ggplot')
 from sklearn.model_selection import train_test_split
 
@@ -277,8 +277,12 @@ def freq(filename, feature, condition):
     df = pd.read_csv(filename)
     condition = condition.split(' ')
     if condition[0] == "=":
+        print(int(condition[1]))
         counts = df[feature].value_counts().to_dict()
-        return counts[int(condition[1])]
+        try:
+            return counts[int(condition[1])]
+        except:
+            return 0
     elif condition[0] == ">":
         count = 0
         df = pd.read_csv(filename)
@@ -439,12 +443,12 @@ def basic():
             return res
     return render_template("upload.html")
 
-@app.route('/info', methods=['GET', 'POST'])
+@app.route('/Info', methods=['GET', 'POST'])
 def info():
     filename = request.cookies.get('filename')
     name = filename.split('.')
     n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name[0]+".csv")
-    return render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"])
+    return render_template("filedata.html", filename = filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name[0]+".csv", convertable=["json", "xml", "nc"])
 
 @app.route('/stat', methods=['GET', 'POST'])
 def stats():
@@ -585,8 +589,8 @@ def fre():
     if request.method == 'GET':
         feature = request.args.get('feature')
         cond = request.args.get('cond')
-        freq = freq(filename, feature, cond)
-        return freq
+        f = freq(filename, feature, cond)
+        return f
     return render_template("clean.html", col = col)
 
 @app.route('/drop', methods = ['GET', 'POST'])
