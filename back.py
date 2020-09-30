@@ -317,7 +317,7 @@ def ms(filename, feature1, feature2):
     combined = combined.tolist()
 
     clf = Mean_Shift()
-    clf.fit(X)
+    clf.fit(combined)
 
     centroids = clf.centroids
 
