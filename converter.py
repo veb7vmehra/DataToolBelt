@@ -31,9 +31,9 @@ def jsontoxml(inp, out=""):
 def jsontonetCDF(inp, out=""):
     if out == "":
         out = "output.nc"
+    jsontocsv(inp,"temp.csv")
     fields = open("temp.csv", 'r').readline().split(',')
     fields[0] = 'ID'
-    jsontocsv(inp,"temp.csv")
     csvtonetCDF("temp.csv",out,field_list=fields)
     if os.path.exists("temp.csv"):
         os.remove("temp.csv")

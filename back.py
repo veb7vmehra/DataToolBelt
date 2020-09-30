@@ -17,6 +17,7 @@ from matplotlib import style
 import seaborn as sns
 style.use('ggplot')
 from sklearn.model_selection import train_test_split
+from datetime import datetime
 
 pd.options.display.max_rows = 10
 pd.options.display.float_format = "{:.1f}".format
@@ -433,18 +434,18 @@ def basic():
                 con.xmltocsv("static/"+f.filename, "static/"+name+".csv")
             elif ext == "nc":
                 con.netCDFtocsv("static/"+f.filename, "static/"+name+".csv")
-            n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+f.filename)
-            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"]))
+            n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name+".csv")
+            res = make_response(render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv?"+str(datetime.now()), convertable=["json", "xml", "nc"]))
             res.set_cookie("filename", value=f.filename)
             return res
     return render_template("upload.html")
 
-@app.route('/info', methods=['GET', 'POST'])
+@app.route('/Info', methods=['GET', 'POST'])
 def info():
     filename = request.cookies.get('filename')
     name = filename.split('.')
     n_row, n_col, col, types, line0, line1, line2, line3, line4, line5 = disp("static/"+name[0]+".csv")
-    return render_template("filedata.html", filename = f.filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name+".csv", convertable=["json", "xml", "nc"])
+    return render_template("filedata.html", filename = filename, n_row = n_row, n_col = n_col, col = col, types = types, lists = "../static/"+name[0]+".csv?"+str(datetime.now()), convertable=["json", "xml", "nc"])
 
 @app.route('/stat', methods=['GET', 'POST'])
 def stats():
@@ -569,7 +570,7 @@ def clAdd():
     if request.method == 'GET':
         kname = request.form['name']
         com = request.form['formula']
-        new_feature("static/"+filename, com, kname)
+        new_feature("static/"+name+".csv", com, kname)
         feature_scatter("static/"+name+".csv", feature1, kname)
         return "../static/"+name+".png"
 
@@ -585,8 +586,8 @@ def fre():
     if request.method == 'GET':
         feature = request.args.get('feature')
         cond = request.args.get('cond')
-        freq = freq(filename, feature, cond)
-        return freq
+        freqq = freq('static/'+name+".csv", feature, cond)
+        return freqq
     return render_template("clean.html", col = col)
 
 @app.route('/drop', methods = ['GET', 'POST'])
